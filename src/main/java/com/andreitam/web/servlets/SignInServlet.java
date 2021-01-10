@@ -32,7 +32,9 @@ public class SignInServlet extends HttpServlet {
         System.out.println(email+ " " + password);
         FitnessClient fitnessClient = null;
         //authenticate  client
-        if (email != null & password != null) { fitnessClient = UserService.getInstance().authenticateUser(email, password); }
+        if (email != null & password != null) {
+            fitnessClient = UserService.getInstance().authenticateUser(email, password);
+        }
         else {
             System.out.println("user & pass submitted empty from form");
             logger.warn("user & pass submitted empty from form");

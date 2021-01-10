@@ -80,7 +80,7 @@ public class SignInGoogleServlet extends HttpServlet {
         Person profile = googleProfile.returnProfile();
         System.out.println("print profile: "+ profile);
         logger.warn("print profile: "+ profile);
-        //refactor authentication
+        //authenticate user
         Gson gson = new Gson();
         if (profile != null) {
             //authenticate google client
@@ -89,6 +89,7 @@ public class SignInGoogleServlet extends HttpServlet {
                 req.getSession().setAttribute("authenticatedUser", fitnessGoogleClient);
                 req.getSession().setAttribute("authUserEmail", fitnessGoogleClient.getEmailAddress());
                 req.getSession().setAttribute("authWithGoogleSignIn", "yes");
+                //check if power user and set attribute
                 if (fitnessGoogleClient.getIs_power()) {
                     req.getSession().setAttribute("authUserPower", true);
                 }
@@ -100,6 +101,7 @@ public class SignInGoogleServlet extends HttpServlet {
                 resp.getWriter().write(gson.toJson(req.getContextPath()+"/main"));
 
             } else {
+                //register user
                 System.out.println("google user not registered");
                 logger.warn("google user not registered");
                 GoogleUserService.getInstance().registerUser(profile);
@@ -108,6 +110,7 @@ public class SignInGoogleServlet extends HttpServlet {
                 req.getSession().setAttribute("authenticatedUser", fitnessGoogleClient);
                 req.getSession().setAttribute("authUserEmail", fitnessGoogleClient.getEmailAddress());
                 req.getSession().setAttribute("authWithGoogleSignIn", "yes");
+                //check if power user and set attribute
                 if (fitnessGoogleClient.getIs_power()) {
                     req.getSession().setAttribute("authUserPower", true);
                 }

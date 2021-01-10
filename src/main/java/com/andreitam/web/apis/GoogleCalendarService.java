@@ -46,15 +46,6 @@ public class GoogleCalendarService {
                 .setDateTime(endDateTime);
         event.setEnd(end);
 
-/*        String[] recurrence = new String[] {"RRULE:FREQ=DAILY;COUNT=1"};
-        event.setRecurrence(Arrays.asList(recurrence));*/
-
-/*        EventAttendee[] attendees = new EventAttendee[] {
-                new EventAttendee().setEmail("lpage@example.com"),
-                new EventAttendee().setEmail("sbrin@example.com"),
-        };
-        event.setAttendees(Arrays.asList(attendees));*/
-
         EventReminder[] reminderOverrides = new EventReminder[] {
                 new EventReminder().setMethod("email").setMinutes(24 * 60),
                 new EventReminder().setMethod("popup").setMinutes(2*60),
