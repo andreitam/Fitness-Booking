@@ -19,7 +19,8 @@ public class LogoutServlet extends HttpServlet {
         req.getSession().invalidate();
         System.out.println("user logged out");
         logger.warn("user logged out");
-        resp.sendRedirect(req.getContextPath());
+        //resp.sendRedirect(req.getContextPath());
+        req.getRequestDispatcher("/index.jsp").forward(req, resp);
     }
 
 }

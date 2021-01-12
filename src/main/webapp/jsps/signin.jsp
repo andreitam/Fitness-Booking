@@ -45,7 +45,7 @@
                 // Send the code to the server
                 $.ajax({
                     type: 'POST',
-                    url: 'http://localhost:8080/FitnessBooking/signin',
+                    url: 'https://immense-sierra-70031.herokuapp.com/signin',
                     // Always include an `X-Requested-With` header in every AJAX request,
                     // to protect against CSRF attacks.
                     headers: {

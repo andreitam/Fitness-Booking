@@ -26,7 +26,6 @@
                     // Scopes to request in addition to 'profile' and 'email'
                     //scope: 'additional_scope'
                     scope: 'https://www.googleapis.com/auth/calendar',
-                    /*scope: 'https://www.googleapis.com/auth/calendar.events.delete',*/
                     scope: 'https://www.googleapis.com/auth/user.phonenumbers.read',
                     scope: 'https://www.googleapis.com/auth/user.birthday.read',
                     scope: 'https://www.googleapis.com/auth/user.gender.read',
@@ -162,7 +161,7 @@
             // Send the code to the server
             $.ajax({
                 type: 'POST',
-                url: 'http://localhost:8080/FitnessBooking/signinGoogle',
+                url: 'https://immense-sierra-70031.herokuapp.com/signinGoogle',
                 // Always include an `X-Requested-With` header in every AJAX request,
                 // to protect against CSRF attacks.
                 headers: {
