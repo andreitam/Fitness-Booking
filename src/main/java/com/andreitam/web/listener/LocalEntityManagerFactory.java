@@ -19,9 +19,23 @@ public class LocalEntityManagerFactory implements ServletContextListener {
     private static EntityManagerFactory emf;
     @Override
     public void contextInitialized(ServletContextEvent event) {
-        logger.warn(System.getenv("DATABASE_URL"));
-        System.out.println(System.getenv("DATABASE_URL"));
-        emf = Persistence.createEntityManagerFactory("JpaGym");
+        Map<String, String> env = System.getenv();
+        Map<String, Object> configOverrides = new HashMap<String, Object>();
+        for (String envName : env.keySet()) {
+            if (envName.contains("JDBC_DATABASE_URL")) {
+                logger.warn(System.getenv("JDBC_DATABASE_URL"));
+                configOverrides.put("javax.persistence.jdbc.url", env.get(envName));
+            }
+            if (envName.contains("JDBC_DATABASE_USERNAME")) {
+                logger.warn(System.getenv("JDBC_DATABASE_USERNAME"));
+                configOverrides.put("javax.persistence.jdbc.user", env.get(envName));
+            }
+            if (envName.contains("JDBC_DATABASE_PASSWORD")) {
+                logger.warn(System.getenv("JDBC_DATABASE_PASSWORD"));
+                configOverrides.put("javax.persistence.jdbc.password", env.get(envName));
+            }
+        }
+        emf = Persistence.createEntityManagerFactory("JpaGym",configOverrides);
     }
 
     @Override

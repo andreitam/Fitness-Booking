@@ -22,7 +22,7 @@
         function start() {
             gapi.load('auth2', function() {
                 auth2 = gapi.auth2.init({
-                    client_id: '464122252753-hhvsb9iv8c5an2h67084ara6et5n0mtp.apps.googleusercontent.com',
+                    client_id:'464122252753-hhvsb9iv8c5an2h67084ara6et5n0mtp.apps.googleusercontent.com',
                     // Scopes to request in addition to 'profile' and 'email'
                     //scope: 'additional_scope'
                     scope: 'https://www.googleapis.com/auth/calendar',
