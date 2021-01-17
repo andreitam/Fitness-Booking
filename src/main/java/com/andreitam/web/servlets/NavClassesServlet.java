@@ -32,24 +32,6 @@ public class NavClassesServlet extends HttpServlet {
 
     @Override
     public void init() throws ServletException {
-        System.out.println("create dummy");
-        DBFitnessClass dbFC = new DBFitnessClass();
-        for (int i=1; i<6;++i) {
-            dbFC.addFitnessClass(new FitnessClass("Balet",6,0,LocalDateTime.of(2021,2,i,17,0,0),
-                    LocalDateTime.of(2021,2,i,18,0,0),true));
-        }
-        for (int i=1; i<6;++i) {
-            dbFC.addFitnessClass(new FitnessClass("Karate",10,0,LocalDateTime.of(2021,2,i,18,0,0),
-                    LocalDateTime.of(2021,2,i,19,0,0),true));
-        }
-        for (int i=1; i<6;++i) {
-            dbFC.addFitnessClass(new FitnessClass("Judo",10,0,LocalDateTime.of(2021,2,i,19,0,0),
-                    LocalDateTime.of(2021,2,i,20,0,0),true));
-        }
-        for (int i=5; i<10;++i) {
-            dbFC.addFitnessClass(new FitnessClass("Aerobic",10,0,LocalDateTime.of(2021,2,i,19,0,0),
-                    LocalDateTime.of(2021,2,i,20,0,0),true));
-        }
     }
 
     @Override
@@ -66,7 +48,7 @@ public class NavClassesServlet extends HttpServlet {
         }
         //3. pagination
         int page = 1;
-        int recordsPerPage = 5;
+        int recordsPerPage = 7;
         if (req.getParameter("page") != null) {
             page = Integer.parseInt(req.getParameter("page"));
         }

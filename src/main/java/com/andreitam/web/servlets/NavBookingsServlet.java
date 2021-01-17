@@ -37,7 +37,7 @@ public class NavBookingsServlet extends HttpServlet {
         Object aUsr = req.getSession().getAttribute("authenticatedUser");
         //4. pagination
         int page = 1;
-        int recordsPerPage = 5;
+        int recordsPerPage = 7;
         if (req.getParameter("page") != null) {
             page = Integer.parseInt(req.getParameter("page"));
         }

@@ -28,7 +28,7 @@ public class NavMembersServlet extends HttpServlet {
         DBFitnessClient dbFitnessClient = new DBFitnessClient();
         //3. pagination
         int page = 1;
-        int recordsPerPage = 5;
+        int recordsPerPage = 7;
         if (req.getParameter("page") != null) {
             page = Integer.parseInt(req.getParameter("page"));
         }

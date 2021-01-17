@@ -173,6 +173,7 @@
                 <a href="${pageContext.request.contextPath}/navclasses" class="nav-item nav-link">Fitness Classes</a>
                 <a href="${pageContext.request.contextPath}/navbookings" class="nav-item nav-link">My Bookings</a>
                 <a href="${pageContext.request.contextPath}/navmembers" class="nav-item nav-link">Members</a>
+                <a href="${pageContext.request.contextPath}/privacy" class="nav-item nav-link">Privacy</a>
             </div>
             <div class="navbar-nav ml-auto">
                 <div class="nav-item dropdown">

@@ -25,7 +25,7 @@
                     client_id:'464122252753-hhvsb9iv8c5an2h67084ara6et5n0mtp.apps.googleusercontent.com',
                     // Scopes to request in addition to 'profile' and 'email'
                     //scope: 'additional_scope'
-                    scope: 'https://www.googleapis.com/auth/calendar',
+                    scope: 'https://www.googleapis.com/auth/calendar.events',
                     scope: 'https://www.googleapis.com/auth/user.phonenumbers.read',
                     scope: 'https://www.googleapis.com/auth/user.birthday.read',
                     scope: 'https://www.googleapis.com/auth/user.gender.read',
@@ -143,7 +143,10 @@
                 <label class="float-left form-check-label">Don't have an account?</label>
                 <a href='${pageContext.request.contextPath}/register' class="float-right text-success">Register Now!</a>
             </div>
-
+            <div class="clearfix">
+                <label class="float-left form-check-label">&copy; 2020-2021</label>
+                <a href='${pageContext.request.contextPath}/privacy' class="float-right text-success">Privacy and Terms</a>
+            </div>
         </form>
     </div>
     </body>
