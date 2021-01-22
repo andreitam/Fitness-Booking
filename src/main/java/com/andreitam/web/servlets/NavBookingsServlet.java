@@ -42,7 +42,7 @@ public class NavBookingsServlet extends HttpServlet {
             page = Integer.parseInt(req.getParameter("page"));
         }
         List<FitnessBooking> listFitnessBookings = dbFitnessBooking.getBookingsByClientPagination(page,recordsPerPage, fitnessClient.getId());
-        Long noOfRecords = dbFitnessBooking.getNoOfRecords();
+        Long noOfRecords = dbFitnessBooking.getNoOfRecordsByClient(fitnessClient.getId());
         int noOfRecordsPerPage = listFitnessBookings.size();
         int noOfPages = (int) Math.ceil(noOfRecords*1.0/recordsPerPage);
         req.setAttribute("fitnessBookings",listFitnessBookings);
@@ -72,7 +72,7 @@ public class NavBookingsServlet extends HttpServlet {
                     // Use access token to call Calendar API
                     GoogleCredential credential = new GoogleCredential().setAccessToken((String) req.getSession().getAttribute("accessToken"));
                     //create google calendar service
-                    GoogleCalendarService googleCalendarService = new GoogleCalendarService(new NetHttpTransport(), JacksonFactory.getDefaultInstance(), credential, "FitnessBooking");
+                    GoogleCalendarService googleCalendarService = new GoogleCalendarService(new NetHttpTransport(), JacksonFactory.getDefaultInstance(), credential, "FitnessWebApp");
                     //create calendar event object from eventId
                     Event event = googleCalendarService.getEvent(eventId);
                     //delete event

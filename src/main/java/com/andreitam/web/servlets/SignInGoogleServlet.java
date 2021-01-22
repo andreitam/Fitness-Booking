@@ -13,6 +13,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
+import java.util.Scanner;
 
 import com.google.api.services.people.v1.model.*;
 import com.google.gson.Gson;
@@ -40,7 +41,9 @@ public class SignInGoogleServlet extends HttpServlet {
         // You can also find your Web application client ID and client secret from the
         // console and specify them directly when you create the GoogleAuthorizationCodeTokenRequest
         // object.
-        String CLIENT_SECRET_FILE = getServletContext().getRealPath("/")+ "/credentials/client_secret.json";
+        /*String CLIENT_SECRET_FILE = getServletContext().getRealPath("/")+ "/credentials/client_secret.json";*/
+        String CLIENT_SECRET_FILE = getServletContext().getRealPath("/")+ "credentials/client_secret.json";
+        logger.warn(CLIENT_SECRET_FILE);
         // Exchange auth code for access token
         GoogleClientSecrets clientSecrets =
                 GoogleClientSecrets.load(
@@ -76,7 +79,7 @@ public class SignInGoogleServlet extends HttpServlet {
         // Use access token to call APIs
         GoogleCredential credential = new GoogleCredential().setAccessToken(accessToken);
         //get account info from People API and write to data base new user
-        GooglePeopleService googleProfile = new GooglePeopleService(new NetHttpTransport(), JacksonFactory.getDefaultInstance(), credential, "FitnessBooking");
+        GooglePeopleService googleProfile = new GooglePeopleService(new NetHttpTransport(), JacksonFactory.getDefaultInstance(), credential, "FitnessWebApp");
         Person profile = googleProfile.returnProfile();
         System.out.println("print profile: "+ profile);
         logger.warn("print profile: "+ profile);

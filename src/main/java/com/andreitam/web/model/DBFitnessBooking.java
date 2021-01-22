@@ -105,6 +105,13 @@ public class DBFitnessBooking implements StoreFitnessBooking {
         return countResults;
     }
 
+    public Long getNoOfRecordsByClient(UUID clientId) {
+        Query countQuery = entityManager.createQuery("SELECT count (fb.id) FROM FitnessBooking fb WHERE fb.fitnessClient.id=:clientId")
+                .setParameter("clientId", clientId);
+        Long countResults = (Long) ((org.hibernate.query.Query) countQuery).uniqueResult();
+        return countResults;
+    }
+
     public void deleteFitnessBookingsByClassAndUser(FitnessClass fitnessClass, FitnessClient fitnessClient) {
         List<FitnessBooking> findBookings = entityManager.createQuery("SELECT fb FROM FitnessBooking fb " +
                 "WHERE fb.fitnessClient.id=:clientId AND fb.fitnessClass.id=:classId ")

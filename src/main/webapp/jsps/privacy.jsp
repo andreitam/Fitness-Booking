@@ -427,7 +427,6 @@
                     </div>
                 </div>
                     <div class="inner">
-                        <h2>This app is a school project!</h2>
                         <p>Last updated <span style="color: #8351f9;">17.01.2021</span></p>
                         <p><strong>INTRODUCTION</strong></p>
                         <p>Firstly this app is a school project and will use your input data for testing purposes.</p>

@@ -29,10 +29,7 @@ import java.util.UUID;
 
 @WebServlet(urlPatterns = {"/navclasses"})
 public class NavClassesServlet extends HttpServlet {
-
-    @Override
-    public void init() throws ServletException {
-    }
+    static final Logger logger = LogManager.getLogger();
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -98,7 +95,7 @@ public class NavClassesServlet extends HttpServlet {
                             // Use access token to call Calendar API
                             GoogleCredential credential = new GoogleCredential().setAccessToken((String) req.getSession().getAttribute("accessToken"));
                             //create google calendar service
-                            GoogleCalendarService googleCalendarService = new GoogleCalendarService(new NetHttpTransport(), JacksonFactory.getDefaultInstance(), credential, "FitnessBooking");
+                            GoogleCalendarService googleCalendarService = new GoogleCalendarService(new NetHttpTransport(), JacksonFactory.getDefaultInstance(), credential, "FitnessWebApp");
                             //create calendar event object from eventId
                             Event event = googleCalendarService.getEvent(eventId);
                             //delete event
@@ -108,6 +105,7 @@ public class NavClassesServlet extends HttpServlet {
                 }
                 catch (Exception e) {
                     e.printStackTrace();
+                    logger.warn("exception thrown: "+e);
                 }
                 //3. delete the bookings for this class
                 dbFitnessBooking.deleteFitnessBookingsByClass(fitnessClassDelete);
@@ -138,7 +136,7 @@ public class NavClassesServlet extends HttpServlet {
                             // Use access token to call Calendar API
                             GoogleCredential credential = new GoogleCredential().setAccessToken((String) req.getSession().getAttribute("accessToken"));
                             //create google calendar service
-                            GoogleCalendarService googleCalendarService = new GoogleCalendarService(new NetHttpTransport(), JacksonFactory.getDefaultInstance(), credential, "FitnessBooking");
+                            GoogleCalendarService googleCalendarService = new GoogleCalendarService(new NetHttpTransport(), JacksonFactory.getDefaultInstance(), credential, "FitnessWebApp");
                             //create calendar event object from eventId
                             Event event = googleCalendarService.getEvent(eventId);
                             //update event
@@ -149,6 +147,7 @@ public class NavClassesServlet extends HttpServlet {
                 }
                 catch (Exception e){
                     e.printStackTrace();
+                    logger.warn("exception thrown: "+e);
                 }
                 //4. redirect
                 resp.sendRedirect(req.getContextPath() + "/navclasses");
@@ -156,21 +155,27 @@ public class NavClassesServlet extends HttpServlet {
             case "Book":
                 //1. get the Fitness Class Object
                 FitnessClass fitnessClassBook = dbFitnessClass.getFitnessClass(UUID.fromString(req.getParameter("idBook")));
-                System.out.println(fitnessClassBook.toString());
+                logger.warn(fitnessClassBook.toString());
                 //2. get the Fitness Client object from session attributes
                 FitnessClient fitnessClient = UserService.getInstance().getClientFromUser(req.getSession().getAttribute("authenticatedUser"),
                         req.getSession().getAttribute("authWithGoogleSignIn"));
                 //3. check if signed with google sign in and insert calendar event
                 Object auth = req.getSession().getAttribute("authWithGoogleSignIn");
                 String eventId = "";
-                if (auth.equals("yes")) {
-                    //add calendar event
-                    // Use access token to call Calendar API
-                    GoogleCredential credential = new GoogleCredential().setAccessToken((String) req.getSession().getAttribute("accessToken"));
-                    //set calendar event
-                    GoogleCalendarService googleCalendarService = new GoogleCalendarService(new NetHttpTransport(), JacksonFactory.getDefaultInstance(), credential, "FitnessBooking");
-                    eventId = googleCalendarService.setGoogleCalendarEvent(fitnessClassBook.getClassName(), "Awesome Fitness Gym", "from Fitness Booking App",
-                            fitnessClassBook.getStartDateTime(), fitnessClassBook.getEndDateTime());
+                try {
+                    if (auth.equals("yes")) {
+                        //add calendar event
+                        // Use access token to call Calendar API
+                        GoogleCredential credential = new GoogleCredential().setAccessToken((String) req.getSession().getAttribute("accessToken"));
+                        //set calendar event
+                        GoogleCalendarService googleCalendarService = new GoogleCalendarService(new NetHttpTransport(), JacksonFactory.getDefaultInstance(), credential, "FitnessWebApp");
+                        eventId = googleCalendarService.setGoogleCalendarEvent(fitnessClassBook.getClassName(), "Awesome Fitness Gym", "from FitnessWebApp",
+                                fitnessClassBook.getStartDateTime(), fitnessClassBook.getEndDateTime());
+                    }
+                }
+                catch (Exception e) {
+                    e.printStackTrace();
+                    logger.warn("exception thrown: "+e);
                 }
                 //4. create the Fitness Booking object
                 FitnessBooking fitnessBooking = new FitnessBooking(LocalDateTime.now().withNano(0), fitnessClient, fitnessClassBook, eventId);
