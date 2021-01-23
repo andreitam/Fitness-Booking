@@ -6,7 +6,14 @@ import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.UUID;
-
+/**
+ * Class FitnessBooking Entity is
+ * the booking of a FitnessClass made by the FitnessClient
+ *
+ * @author  Andrei Tamasanu
+ * @version 1.0
+ * @since   2021-01-23
+ */
 @Entity
 @Table(name = "fitness_bookings")
 public class FitnessBooking {

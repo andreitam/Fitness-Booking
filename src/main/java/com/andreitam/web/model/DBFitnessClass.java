@@ -18,7 +18,13 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.UUID;
-
+/**
+ * DAO class DBFitnessClass using persistence.api
+ *
+ * @author  Andrei Tamasanu
+ * @version 1.0
+ * @since   2021-01-23
+ */
 public class DBFitnessClass implements StoreFitnessClass {
 
     private final EntityManager entityManager;
@@ -27,12 +33,21 @@ public class DBFitnessClass implements StoreFitnessClass {
     public DBFitnessClass(){
         entityManager = LocalEntityManagerFactory.createEntityManager();
     }
-
+    /**
+     * Method returns FitnessClass object from database
+     *
+     * @param classId
+     * @return FitnessClass
+     */
     @Override
     public FitnessClass getFitnessClass(UUID classId) {
         return entityManager.find(FitnessClass.class, classId);
     }
-
+    /**
+     * Method persists FitnessClass object into database
+     *
+     * @param fitnessClass
+     */
     @Override
     public void addFitnessClass(FitnessClass fitnessClass) {
         entityManager.getTransaction().begin();
@@ -40,7 +55,11 @@ public class DBFitnessClass implements StoreFitnessClass {
         entityManager.flush();
         entityManager.getTransaction().commit();
     }
-
+    /**
+     * Method updates persisted FitnessClass object from database
+     *
+     * @param classId, fitnessClass
+     */
     @Override
     public void updateFitnessClass(UUID classId, FitnessClass fitnessClass) {
         FitnessClass updatedFitnessClass = entityManager.find(FitnessClass.class, classId);
@@ -57,7 +76,11 @@ public class DBFitnessClass implements StoreFitnessClass {
         entityManager.flush();
         entityManager.getTransaction().commit();
     }
-
+    /**
+     * Method deletes persisted FitnessClass object from database
+     *
+     * @param classId
+     */
     @Override
     public void deleteFitnessClass(UUID classId) {
         FitnessClass deletedFitnessClass = entityManager.find(FitnessClass.class, classId);
@@ -69,14 +92,24 @@ public class DBFitnessClass implements StoreFitnessClass {
         entityManager.clear();
         entityManager.getTransaction().commit();
     }
-
+    /**
+     * Method returns list with FitnessClasses objects from database
+     *
+     * @return List<FitnessClass>
+     */
     @Override
     public List<FitnessClass> getFitnessClasses() {
         return entityManager
                 .createQuery("select fcl from FitnessClass fcl")
                 .getResultList();
     }
-
+    /**
+     * Method returns list with FitnessClasses objects from database.
+     * The returned list is prepared for pagination from the Hibernate query.
+     *
+     * @param page, recordsPerPage
+     * @return List<FitnessClass>
+     */
     public List<FitnessClass> getFitnessClassesPagination(int page, int recordsPerPage) {
         List<FitnessClass> classesList = entityManager.createQuery("SELECT f FROM FitnessClass f order by f.endDateTime")
                 .setMaxResults(recordsPerPage)
@@ -90,7 +123,11 @@ public class DBFitnessClass implements StoreFitnessClass {
         }
         return classesList;
     }
-
+    /**
+     * Method returns the number of records in the database
+     *
+     * @return countResults
+     */
     public Long getNoOfRecords() {
         Query countQuery = entityManager.createQuery("SELECT count (f.id) FROM FitnessClass f");
         Long countResults = (Long) ((org.hibernate.query.Query) countQuery).uniqueResult();

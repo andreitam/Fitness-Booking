@@ -4,7 +4,15 @@ import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.Set;
 import java.util.UUID;
-
+/**
+ * Class FitnessClient Entity is
+ * the user who is booking the classes
+ *
+ *
+ * @author  Andrei Tamasanu
+ * @version 1.0
+ * @since   2021-01-23
+ */
 @Entity
 @Table(name = "fitness_clients")
 public class FitnessClient {

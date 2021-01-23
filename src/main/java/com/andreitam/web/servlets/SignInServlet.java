@@ -29,14 +29,12 @@ public class SignInServlet extends HttpServlet {
 
         String email =  req.getParameter("email");
         String password =  req.getParameter("password");
-        System.out.println(email+ " " + password);
         FitnessClient fitnessClient = null;
         //authenticate  client
         if (email != null & password != null) {
             fitnessClient = UserService.getInstance().authenticateUser(email, password);
         }
         else {
-            System.out.println("user & pass submitted empty from form");
             logger.warn("user & pass submitted empty from form");
         }
         //set authenticate  client
@@ -45,11 +43,10 @@ public class SignInServlet extends HttpServlet {
                 req.getSession().setAttribute("authUserEmail", fitnessClient.getEmailAddress());
                 req.getSession().setAttribute("authWithGoogleSignIn", "no");
                 req.getSession().setAttribute("authUserPower", false);
-                System.out.println("user authenticated");
+                logger.warn("user authenticated");
                 resp.sendRedirect(req.getContextPath() + "/main");
         }
         else {
-                System.out.println("user & pass completed but not registered, user must register");
                 logger.warn("user & pass completed but not registered, user must register");
                 resp.sendRedirect(req.getContextPath() + "/register");
         }

@@ -11,7 +11,14 @@ import org.apache.logging.log4j.Logger;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
-
+/**
+ * Service class for google user management
+ * (clients registered with GoogleSignIn)
+ *
+ * @author  Andrei Tamasanu
+ * @version 1.0
+ * @since   2021-01-23
+ */
 public class GoogleUserService {
     private DBFitnessGoogleClient dataBaseGoogle;
     private FitnessGoogleClient fitnessGoogleClient;
@@ -30,7 +37,11 @@ public class GoogleUserService {
         }
         return instance;
     }
-    //get email from Profile
+    /**
+     * Method gets email from google profile
+     *
+     * @param profile
+     */
     public String getEmailAddres(Person profile) {
         List<EmailAddress> emails = profile.getEmailAddresses();
         if (emails != null) {
@@ -38,7 +49,12 @@ public class GoogleUserService {
         }
         return null;
     }
-    //add user to db
+    /**
+     * Method registers a googleuser.
+     * Creates a FitnessGoogleClient object to be passed to the DAO class
+     *
+     * @param profile
+     */
     public void registerUser(Person profile) {
         String name="", email="";
         String phone, gender;
@@ -81,7 +97,13 @@ public class GoogleUserService {
         System.out.println("register user logged with google sign in: "+fitnessGoogleClient.toString());
         dataBaseGoogle.addFitnessGoogleClient(fitnessGoogleClient);
     }
-
+    /**
+     * Method authenticates a google user.
+     * Returns a FitnessGoogleClient from a supplied email address.
+     *
+     * @param emailAddress
+     * @return FitnessGoogleClient
+     */
     public FitnessGoogleClient authenticateGoogleUser(String emailAddress){
         //fill list with users from db
         users = new ArrayList<>();
@@ -96,7 +118,13 @@ public class GoogleUserService {
         }
         return null;
     }
-
+    /**
+     * Method checks if the user has admin rights.
+     * The admin email for comparison is passed from the environment variable.
+     *
+     * @param emailAddress
+     * @return boolean
+     */
     public Boolean isPowerUser(String emailAddress) {
         if (emailAddress.equals(System.getenv("powerUser"))) {
             logger.warn("power user registered");
@@ -108,7 +136,9 @@ public class GoogleUserService {
 
 }
 
-//helper class to convert json to local date
+/**
+ * helper class to convert json to local date
+ */
 class SomeDate {
     public int day;
     public int month;

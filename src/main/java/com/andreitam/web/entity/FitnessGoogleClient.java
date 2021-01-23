@@ -3,7 +3,15 @@ package com.andreitam.web.entity;
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.UUID;
-
+/**
+ * Class FitnessGoogleClient Entity is
+ * a FitnessClient logged with GoogleSignIn.
+ *
+ *
+ * @author  Andrei Tamasanu
+ * @version 1.0
+ * @since   2021-01-23
+ */
 @Entity
 @Table(name = "fitness_google_clients")
 public class FitnessGoogleClient {
@@ -104,11 +112,11 @@ public class FitnessGoogleClient {
     @JoinColumn(name = "client_id", referencedColumnName = "id")
     private FitnessClient fitnessClient;
 
-    public FitnessClient getFitnessClinet() {
+    public FitnessClient getFitnessClient() {
         return fitnessClient;
     }
 
-    public void setFitnessClinet(FitnessClient fitnessClinet) {
+    public void setFitnessClient(FitnessClient fitnessClinet) {
         this.fitnessClient = fitnessClinet;
     }
 }

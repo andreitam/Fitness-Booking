@@ -9,12 +9,15 @@ import org.apache.logging.log4j.Logger;
 
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
 import java.util.List;
 import java.util.UUID;
-
+/**
+ * DAO class DBFitnessBooking using persistence.api
+ *
+ * @author  Andrei Tamasanu
+ * @version 1.0
+ * @since   2021-01-23
+ */
 public class DBFitnessBooking implements StoreFitnessBooking {
 
     private final EntityManager entityManager;
@@ -23,12 +26,21 @@ public class DBFitnessBooking implements StoreFitnessBooking {
     public DBFitnessBooking(){
         entityManager = LocalEntityManagerFactory.createEntityManager();
     }
-
+    /**
+     * Method returns FitnessBooking object from database
+     *
+     * @param bookingId
+     * @return FitnessBooking
+     */
     @Override
     public FitnessBooking getFitnessBooking(UUID bookingId) {
         return entityManager.find(FitnessBooking.class, bookingId);
     }
-
+    /**
+     * Method persists FitnessBooking object into database
+     *
+     * @param fitnessBooking
+     */
     @Override
     public void addFitnessBooking(FitnessBooking fitnessBooking) {
             entityManager.getTransaction().begin();
@@ -39,12 +51,20 @@ public class DBFitnessBooking implements StoreFitnessBooking {
             logger.warn("added booking: "+fitnessBooking.toString());
 
     }
-
+    /**
+     * Method updates persisted FitnessBooking object from database
+     *
+     * @param bookingId, fitnessBooking
+     */
     @Override
     public void updateFitnessBooking(UUID bookingId, FitnessBooking fitnessBooking) {
 
     }
-
+    /**
+     * Method deletes persisted FitnessBooking object from database
+     *
+     * @param bookingId
+     */
     @Override
     public void deleteFitnessBooking(UUID bookingId) {
         FitnessBooking deletedFitnessCBooking = entityManager.find(FitnessBooking.class, bookingId);
@@ -56,21 +76,24 @@ public class DBFitnessBooking implements StoreFitnessBooking {
         entityManager.clear();
         entityManager.getTransaction().commit();
     }
-
+    /**
+     * Method returns list with FitnessBookings objects from database
+     *
+     * @return List<FitnessBooking>
+     */
     @Override
     public List<FitnessBooking> getBookings() {
         return entityManager
                 .createQuery("SELECT fb FROM FitnessBooking fb")
                 .getResultList();
     }
-
-    public List<FitnessBooking> getBookingsByClient(UUID clientId) {
-        return entityManager
-                .createQuery("SELECT fb FROM FitnessBooking fb WHERE fb.fitnessClient.id=:clientId")
-                .setParameter("clientId", clientId)
-                .getResultList();
-    }
-
+    /**
+     * Method returns list with FitnessBookings objects of client from database.
+     * The returned list is prepared for pagination from the Hibernate query.
+     *
+     * @param page, recordsPerPage, clientId
+     * @return List<FitnessBooking>
+     */
     public List<FitnessBooking> getBookingsByClientPagination(int page, int recordsPerPage, UUID clientId) {
         List<FitnessBooking> bookingsList = entityManager.createQuery("SELECT fb FROM FitnessBooking fb " +
                 "WHERE fb.fitnessClient.id=:clientId ORDER BY fb.dateTimeBooking")
@@ -86,7 +109,12 @@ public class DBFitnessBooking implements StoreFitnessBooking {
         }
         return bookingsList;
     }
-
+    /**
+     * Method returns list with FitnessBookings objects belonging to a FintessClass from database.
+     *
+     * @param fitnessClass
+     * @return List<FitnessBooking>
+     */
     public List<FitnessBooking> getBookingsByClass(FitnessClass fitnessClass) {
         List<FitnessBooking> bookingsList = entityManager.createQuery("SELECT fb FROM FitnessBooking fb " +
                 "WHERE fb.fitnessClass.id=:classId")
@@ -99,37 +127,23 @@ public class DBFitnessBooking implements StoreFitnessBooking {
         return bookingsList;
     }
 
-    public Long getNoOfRecords() {
-        Query countQuery = entityManager.createQuery("SELECT count (fb.id) FROM FitnessBooking fb");
-        Long countResults = (Long) ((org.hibernate.query.Query) countQuery).uniqueResult();
-        return countResults;
-    }
-
+    /**
+     * Method returns the number of records in the database of a client.
+     *
+     * @param clientId
+     * @return countResults
+     */
     public Long getNoOfRecordsByClient(UUID clientId) {
         Query countQuery = entityManager.createQuery("SELECT count (fb.id) FROM FitnessBooking fb WHERE fb.fitnessClient.id=:clientId")
                 .setParameter("clientId", clientId);
         Long countResults = (Long) ((org.hibernate.query.Query) countQuery).uniqueResult();
         return countResults;
     }
-
-    public void deleteFitnessBookingsByClassAndUser(FitnessClass fitnessClass, FitnessClient fitnessClient) {
-        List<FitnessBooking> findBookings = entityManager.createQuery("SELECT fb FROM FitnessBooking fb " +
-                "WHERE fb.fitnessClient.id=:clientId AND fb.fitnessClass.id=:classId ")
-                .setParameter("clientId", fitnessClient.getId())
-                .setParameter("classId", fitnessClass.getId())
-                .getResultList();
-        for (FitnessBooking fitnessBooking:findBookings) {
-            FitnessBooking deletedFitnessCBooking = entityManager.find(FitnessBooking.class, fitnessBooking.getId());
-            System.out.println("booking to be deleted: "+deletedFitnessCBooking.toString());
-            logger.warn("booking to be deleted: "+deletedFitnessCBooking.toString());
-            entityManager.getTransaction().begin();
-            entityManager.remove(deletedFitnessCBooking);
-            entityManager.flush();
-            entityManager.clear();
-            entityManager.getTransaction().commit();
-        }
-    }
-
+    /**
+     * Method deletes FitnessBokings containing a specified FitnessClass.
+     *
+     * @param fitnessClass
+     */
     public void deleteFitnessBookingsByClass(FitnessClass fitnessClass) {
         List<FitnessBooking> findBookings = entityManager.createQuery("SELECT fb FROM FitnessBooking fb " +
                 "WHERE fb.fitnessClass.id=:classId ")
@@ -146,7 +160,11 @@ public class DBFitnessBooking implements StoreFitnessBooking {
             entityManager.getTransaction().commit();
         }
     }
-
+    /**
+     * Method checks if a FitnessClient already booked A FitnessClass
+     *
+     * @param fitnessBooking
+     */
     public boolean checkAllreadyBooked(FitnessBooking fitnessBooking) {
         List<FitnessBooking> allreadyBooked = entityManager.createQuery("SELECT fb FROM FitnessBooking fb " +
                 "WHERE fb.fitnessClient.id=:clientId AND fb.fitnessClass.id=:classId ")

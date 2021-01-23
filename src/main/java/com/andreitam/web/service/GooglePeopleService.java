@@ -1,4 +1,4 @@
-package com.andreitam.web.apis;
+package com.andreitam.web.service;
 
 import com.google.api.client.googleapis.auth.oauth2.GoogleCredential;
 import com.google.api.client.http.HttpTransport;
@@ -9,7 +9,13 @@ import com.google.api.services.people.v1.PeopleService;
 import com.google.api.services.people.v1.model.Person;
 
 import java.io.IOException;
-
+/**
+ * Service class for Google People API
+ *
+ * @author  Andrei Tamasanu
+ * @version 1.0
+ * @since   2021-01-23
+ */
 public class GooglePeopleService {
     PeopleService peopleService;
 

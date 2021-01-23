@@ -1,6 +1,6 @@
 package com.andreitam.web.servlets;
 
-import com.andreitam.web.apis.GooglePeopleService;
+import com.andreitam.web.service.GooglePeopleService;
 import com.andreitam.web.entity.FitnessGoogleClient;
 import com.andreitam.web.service.GoogleUserService;
 import com.google.api.client.googleapis.auth.oauth2.*;
@@ -13,7 +13,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
-import java.util.Scanner;
 
 import com.google.api.services.people.v1.model.*;
 import com.google.gson.Gson;
@@ -89,16 +88,8 @@ public class SignInGoogleServlet extends HttpServlet {
             //authenticate google client
             FitnessGoogleClient fitnessGoogleClient = GoogleUserService.getInstance().authenticateGoogleUser(GoogleUserService.getInstance().getEmailAddres(profile));
             if (fitnessGoogleClient != null) {
-                req.getSession().setAttribute("authenticatedUser", fitnessGoogleClient);
-                req.getSession().setAttribute("authUserEmail", fitnessGoogleClient.getEmailAddress());
-                req.getSession().setAttribute("authWithGoogleSignIn", "yes");
-                //check if power user and set attribute
-                if (fitnessGoogleClient.getIs_power()) {
-                    req.getSession().setAttribute("authUserPower", true);
-                }
-                else {
-                    req.getSession().setAttribute("authUserPower", false);
-                }
+                //set attributes
+                setAttributesAutneticatedUser(req, fitnessGoogleClient);
                 //send ajax redirect to main because user is authenticated
                 resp.setContentType("application/json");
                 resp.getWriter().write(gson.toJson(req.getContextPath()+"/main"));
@@ -110,16 +101,8 @@ public class SignInGoogleServlet extends HttpServlet {
                 GoogleUserService.getInstance().registerUser(profile);
                 //authenticate again after registering
                 fitnessGoogleClient = GoogleUserService.getInstance().authenticateGoogleUser(GoogleUserService.getInstance().getEmailAddres(profile));
-                req.getSession().setAttribute("authenticatedUser", fitnessGoogleClient);
-                req.getSession().setAttribute("authUserEmail", fitnessGoogleClient.getEmailAddress());
-                req.getSession().setAttribute("authWithGoogleSignIn", "yes");
-                //check if power user and set attribute
-                if (fitnessGoogleClient.getIs_power()) {
-                    req.getSession().setAttribute("authUserPower", true);
-                }
-                else {
-                    req.getSession().setAttribute("authUserPower", false);
-                }
+                //set attributes
+                setAttributesAutneticatedUser(req, fitnessGoogleClient);
                 //send ajax redirect to main because user is registered and therefore autehnticated
                 resp.setContentType("application/json");
                 resp.getWriter().write(gson.toJson(req.getContextPath()+"/main"));
@@ -131,6 +114,18 @@ public class SignInGoogleServlet extends HttpServlet {
             //send ajax redirect to main because user is registered and therefore autehnticated
             resp.setContentType("application/json");
             resp.getWriter().write(gson.toJson(req.getContextPath()+"/register"));
+        }
+    }
+
+    private void setAttributesAutneticatedUser(HttpServletRequest req, FitnessGoogleClient fitnessGoogleClient) {
+        req.getSession().setAttribute("authenticatedUser", fitnessGoogleClient);
+        req.getSession().setAttribute("authUserEmail", fitnessGoogleClient.getEmailAddress());
+        req.getSession().setAttribute("authWithGoogleSignIn", "yes");
+        //check if power user and set attribute
+        if (fitnessGoogleClient.getIs_power()) {
+            req.getSession().setAttribute("authUserPower", true);
+        } else {
+            req.getSession().setAttribute("authUserPower", false);
         }
     }
 }

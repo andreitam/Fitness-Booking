@@ -9,7 +9,14 @@ import java.util.Comparator;
 import java.util.Objects;
 import java.util.Set;
 import java.util.UUID;
-
+/**
+ * Class FitnessClass Entity is
+ * the resource which must be managed by the booking system
+ *
+ * @author  Andrei Tamasanu
+ * @version 1.0
+ * @since   2021-01-23
+ */
 @Entity
 @Table(name = "fitness_classes")
 public class FitnessClass {

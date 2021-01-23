@@ -11,7 +11,14 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
-
+/**
+ * Service class for standard user management
+ * (clients registered without GoogleSignIn)
+ *
+ * @author  Andrei Tamasanu
+ * @version 1.0
+ * @since   2021-01-23
+ */
 public class UserService {
     private DBFitnessClient dataBase;
     private DBFitnessGoogleClient dataBaseGoogle;
@@ -32,7 +39,12 @@ public class UserService {
         }
         return instance;
     }
-
+    /**
+     * Method registers a standard user.
+     * Creates a FitnessClient object to be passed to the DAO class
+     *
+     * @param name, email, password, phone, birthday, gender, active
+     */
     public FitnessClient registerUser(String name, String email, String password, String phone, String birthday, String gender, Boolean active) {
         fitnessClient = new FitnessClient(name, email, password, phone,
                 LocalDate.parse(birthday, DateTimeFormatter.ISO_DATE), gender, active);
@@ -41,7 +53,12 @@ public class UserService {
         logger.warn("registered fitness user: "+fitnessClient.toString());
         return fitnessClient;
     }
-
+    /**
+     * Method authenticates a standard user.
+     * Checks is user already in the database.
+     *
+     * @param email, password
+     */
     public FitnessClient authenticateUser(String email, String password){
         users = new ArrayList<>();
         users.addAll(dataBase.getFitnessClients());
@@ -55,11 +72,16 @@ public class UserService {
         }
         return null;
     }
-
+    /**
+     * Method returns a FitnessClient from an authenticated user
+     *
+     * @param user, auth from session attributes
+     * @return FitnessClient
+     */
     public FitnessClient getClientFromUser(Object user, Object auth) {
         if (auth.equals("yes")) {
             FitnessGoogleClient fitnessGoogleClientFromSession = (FitnessGoogleClient) user;
-            fitnessClient = dataBaseGoogle.getFitnessGoogleClient(fitnessGoogleClientFromSession.getGoogleId()).getFitnessClinet();
+            fitnessClient = dataBaseGoogle.getFitnessGoogleClient(fitnessGoogleClientFromSession.getGoogleId()).getFitnessClient();
             System.out.println("authenticated user with google sign in is: "+fitnessClient.toString());
             logger.warn("authenticated user with google sign in is: "+fitnessClient.toString());
         }

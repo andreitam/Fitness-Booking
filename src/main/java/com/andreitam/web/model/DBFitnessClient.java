@@ -17,7 +17,13 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
-
+/**
+ * DAO class DBFitnessClient using persistence.api
+ *
+ * @author  Andrei Tamasanu
+ * @version 1.0
+ * @since   2021-01-23
+ */
 public class DBFitnessClient implements StoreFitnessClient {
 
     private final EntityManager entityManager;
@@ -26,12 +32,21 @@ public class DBFitnessClient implements StoreFitnessClient {
     public DBFitnessClient(){
         entityManager = LocalEntityManagerFactory.createEntityManager();
     }
-
+    /**
+     * Method returns FitnessClient object from database
+     *
+     * @param clientId
+     * @return FitnessClient
+     */
     @Override
     public FitnessClient getFitnessClient(UUID clientId) {
         return entityManager.find(FitnessClient.class, clientId);
     }
-
+    /**
+     * Method persists FitnessClient object into database
+     *
+     * @param fitnessClient
+     */
     @Override
     public void addFitnessClient(FitnessClient fitnessClient) {
         entityManager.getTransaction().begin();
@@ -39,7 +54,11 @@ public class DBFitnessClient implements StoreFitnessClient {
         entityManager.flush();
         entityManager.getTransaction().commit();
     }
-
+    /**
+     * Method updates persisted FitnessClient object from database
+     *
+     * @param clientId, fitnessClient
+     */
     @Override
     public void updateFitnessClient(UUID clientId, FitnessClient fitnessClient) {
         FitnessClient updatedFitnessClient = entityManager.find(FitnessClient.class, clientId);
@@ -56,19 +75,33 @@ public class DBFitnessClient implements StoreFitnessClient {
         entityManager.flush();
         entityManager.getTransaction().commit();
     }
-
+    /**
+     * Method deletes persisted FitnessClient object from database
+     *
+     * @param clientId
+     */
     @Override
     public void deleteFitnessClient(UUID clientId) {
 
     }
-
+    /**
+     * Method returns list with FitnessClients objects from database
+     *
+     * @return List<FitnessClient>
+     */
     @Override
     public List<FitnessClient> getFitnessClients() {
         return entityManager
                 .createQuery("select fc from FitnessClient fc")
                 .getResultList();
     }
-
+    /**
+     * Method returns list with FitnessClients objects from database.
+     * The returned list is prepared for pagination from the Hibernate query.
+     *
+     * @param page, recordsPerPage
+     * @return List<FitnessClient>
+     */
     public List<FitnessClient> getFitnessClientsPagination(int page, int recordsPerPage) {
         List<FitnessClient> clientsList = entityManager.createQuery("SELECT fc FROM FitnessClient fc order by fc.id")
                 .setMaxResults(recordsPerPage)
@@ -82,7 +115,11 @@ public class DBFitnessClient implements StoreFitnessClient {
         }
         return clientsList;
     }
-
+    /**
+     * Method returns the number of records in the database
+     *
+     * @return countResults
+     */
     public Long getNoOfRecords() {
         Query countQuery = entityManager.createQuery("SELECT count (fc.id) FROM FitnessClient fc");
         Long countResults = (Long) ((org.hibernate.query.Query) countQuery).uniqueResult();

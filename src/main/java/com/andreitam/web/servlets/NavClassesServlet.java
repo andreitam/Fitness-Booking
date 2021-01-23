@@ -1,6 +1,6 @@
 package com.andreitam.web.servlets;
 
-import com.andreitam.web.apis.GoogleCalendarService;
+import com.andreitam.web.service.GoogleCalendarService;
 import com.andreitam.web.entity.FitnessBooking;
 import com.andreitam.web.entity.FitnessClass;
 import com.andreitam.web.entity.FitnessClient;

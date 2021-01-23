@@ -1,4 +1,4 @@
-package com.andreitam.web.apis;
+package com.andreitam.web.service;
 
 import com.google.api.client.googleapis.auth.oauth2.GoogleCredential;
 import com.google.api.client.http.HttpTransport;
@@ -14,7 +14,13 @@ import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
-
+/**
+ * Service class for Google Calendar API
+ *
+ * @author  Andrei Tamasanu
+ * @version 1.0
+ * @since   2021-01-23
+ */
 public class GoogleCalendarService {
     Calendar service;
     static final Logger logger = LogManager.getLogger();
